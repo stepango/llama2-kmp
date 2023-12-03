@@ -1,10 +1,8 @@
-# llama2.kt
+# llama2-kmp
 
-English | [中文](/docs/README_zh.md)
+![llama2-kmp](docs/llama2-kmp.png)
 
-![llama2.kt](docs/llama2.kt.png)
-
-This is the Kotlin implementation of [Andrej Karpathy](https://karpathy.ai/)'s [llama2.c](https://github.com/karpathy/llama2.c) project.
+This is the Kotlin Multiplatform implementation of [Andrej Karpathy](https://karpathy.ai/)'s [llama2.c](https://github.com/karpathy/llama2.c) project.
 
 ## How to Run
 
@@ -18,7 +16,7 @@ This is the Kotlin implementation of [Andrej Karpathy](https://karpathy.ai/)'s [
 kotlinc src/main/kotlin/Llama2.kt -include-runtime -d Llama2.jar
 ```
 
-2. Execute the generated jar file using the `java -jar` command, passing in the required `checkpoint` path;
+1. Execute the generated jar file using the `java -jar` command, passing in the required `checkpoint` path;
 
 ```shell
 java -jar Llama2.jar /path/to/model.bin
@@ -64,16 +62,16 @@ The following data are all based on tests on Macbook Pro 2019 (2.3 GHz 8-core In
 
 Compile and test using `gcc -o run run.c -lm`. Data is as follows:
 
-|           | parameters                                                   | tok/s |
-|-----------| ------------------------------------------------------------ | ----- |
-| Llama2.c  | [stories15M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories15M.bin) | 26    |
-| Llama2.c  | [stories42M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories42M.bin) | 9     |
-| Llama2.c  | [stories110M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories110M.bin) | 3     |
+|          | parameters                                                                                 | tok/s |
+|----------|--------------------------------------------------------------------------------------------|-------|
+| Llama2.c | [stories15M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories15M.bin)   | 26    |
+| Llama2.c | [stories42M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories42M.bin)   | 9     |
+| Llama2.c | [stories110M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories110M.bin) | 3     |
 
 ### Llama2.kt
 
-|           | parameters                                                   | tok/s |
-|-----------| ------------------------------------------------------------ | ----- |
-| Llama2.kt | [stories15M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories15M.bin) | 61    |
-| Llama2.kt | [stories42M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories42M.bin) | 22    |
+|           | parameters                                                                                 | tok/s |
+|-----------|--------------------------------------------------------------------------------------------|-------|
+| Llama2.kt | [stories15M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories15M.bin)   | 61    |
+| Llama2.kt | [stories42M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories42M.bin)   | 22    |
 | Llama2.kt | [stories110M.bin](https://huggingface.co/karpathy/tinyllamas/resolve/main/stories110M.bin) | 8     |

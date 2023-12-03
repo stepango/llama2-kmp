@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         mavenCentral()
@@ -5,8 +7,17 @@ pluginManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
 }
 
-rootProject.name = "llama2.kt"
+//plugins {
+//    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+//}
+
+rootProject.name = "llama2.kmp"
+
+include("llama2")
+include("jvmApp")
