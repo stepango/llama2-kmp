@@ -11,6 +11,16 @@ kotlin {
             executable()
         }
     }
+    macosX64 {
+        binaries {
+            executable()
+        }
+    }
+    linuxX64 {
+        binaries {
+            executable()
+        }
+    }
     js {
         nodejs {
             binaries.executable()
@@ -19,6 +29,7 @@ kotlin {
             }
         }
     }
+
     sourceSets{
         val commonMain by getting {
             dependencies {
@@ -40,6 +51,20 @@ val configureExec: (Exec).() -> Unit = {
         arguments.orNull?.split(" ") ?: emptyList()
     })
 }
-tasks.named<Exec>("runDebugExecutableMingwX64").configure(configureExec)
-tasks.named<Exec>("runReleaseExecutableMingwX64").configure(configureExec)
-//tasks.named<Exec>("jsNodeRun").configure(configureExec)
+
+val variants = listOf(
+    "Debug",
+    "Release"
+)
+
+val nativePlatforms = listOf(
+    "MingwX64",
+    "MacosX64",
+    "LinuxX64",
+)
+
+variants.forEach { variant ->
+    nativePlatforms.forEach { platform ->
+        tasks.named<Exec>("run${variant}Executable${platform}").configure(configureExec)
+    }
+}
