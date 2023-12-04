@@ -13,11 +13,9 @@ dependencyResolutionManagement {
     }
 }
 
-//plugins {
-//    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
-//}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+    id("tools.forma.includer") version "0.2.0"
+}
 
-rootProject.name = "llama2.kmp"
-
-include("llama2")
-include("jvmApp")
+rootProject.name = "llama2-kmp"

@@ -20,6 +20,11 @@ Windows:
 .\gradlew.bat llama2:runDebugExecutableMingwX64 -PrunArgs="stories15M.bin 0.9 512 'The little girl named Oxana'"
 ```
 
+NodeJs:
+```shell
+llama2:jsNodeRun -PrunArgs='stories15M.bin 0.9 512 "The little girl named Oxana"'
+```
+
 In addition to `checkpoint`, other parameters are also supported:
 
 ```shell

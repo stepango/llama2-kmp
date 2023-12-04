@@ -1,12 +1,18 @@
-@file:JvmName("Main")
+import okio.NodeJsFileSystem
+import kotlin.time.measureTime
 
-import okio.FileSystem
-import kotlin.system.exitProcess
-import kotlin.system.measureTimeMillis
-
-
-fun main(args: Array<String>) {
-
+@JsModule("process")
+@JsNonModule
+external object process {
+    val argv: Array<String>
+    val cwd: () -> String
+}
+fun main() {
+    val args = process.argv.sliceArray(2 until process.argv.size)
+    val projectRoot = process.cwd().split("\\").let {
+        it.dropLast(it.size - it.indexOf("build"))
+    }.joinToString("\\")
+    println(projectRoot)
     // poor man's C argparse
     var checkPoint: String? = null // e.g. out/model.bin
     var temperature = 0.0f // 0.9f; // e.g. 1.0, or 0.0
@@ -16,7 +22,7 @@ fun main(args: Array<String>) {
     // 'checkpoint' is necessary arg
     if (args.isEmpty()) {
         println("Usage: java -jar Llama2.jar <checkpoint_file> [temperature] [steps] [prompt]\n")
-        exitProcess(1)
+        throw IllegalStateException("No checkpoint file provided")
     }
 
     checkPoint = args[0]
@@ -33,13 +39,15 @@ fun main(args: Array<String>) {
     }
 
     val model = Llama2Utils.buildLlama2(
-        FileSystem.SYSTEM,
-        checkPoint
+        NodeJsFileSystem,
+        checkPoint,
+        projectRoot
     )
 
     val tokenize = TokenizerUtils.buildTokenizer(
-        FileSystem.SYSTEM,
-        model.config.vocabSize
+        NodeJsFileSystem,
+        model.config.vocabSize,
+        projectRoot = projectRoot
     )
 
     // process the prompt, if any
@@ -49,13 +57,13 @@ fun main(args: Array<String>) {
         IntArray(0)
     }
 
-    val time = measureTimeMillis {
+    val time = measureTime{
         model.generate(promptTokens, steps, temperature) { next ->
             // following BOS token (1), sentencepiece decoder strips any leading whitespace (see PR#89)
             val tokenStr = tokenize.decode(next)
             print(tokenStr)
         }
-    }
+    }.inWholeMilliseconds
     // report achieved tok/s
     println("\n\nachieved tok/s: ${(steps) / time.toDouble() * 1000}")
 }

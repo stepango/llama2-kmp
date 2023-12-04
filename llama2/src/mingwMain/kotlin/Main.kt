@@ -29,7 +29,10 @@ fun main(args: Array<String>) {
         prompt = args[3]
     }
 
-    val model = Llama2Utils.buildLlama2(checkPoint)
+    val model = Llama2Utils.buildLlama2(
+        FileSystem.SYSTEM,
+        checkPoint
+    )
 
     val tokenize = TokenizerUtils.buildTokenizer(
         FileSystem.SYSTEM,
@@ -43,7 +46,7 @@ fun main(args: Array<String>) {
         IntArray(0)
     }
 
-    val time = measureTime{
+    val time = measureTime {
         model.generate(promptTokens, steps, temperature) { next ->
             // following BOS token (1), sentencepiece decoder strips any leading whitespace (see PR#89)
             val tokenStr = tokenize.decode(next)

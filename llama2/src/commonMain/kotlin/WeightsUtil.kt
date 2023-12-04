@@ -2,7 +2,6 @@ import okio.BufferedSource
 
 class WeightsUtil {
     companion object {
-
         fun from(config: Config, buffer: BufferedSource): Weights {
             val tokenEmbeddingTable = buffer.readFloatLeArray(config.vocabSize * config.dim)
             return Weights(

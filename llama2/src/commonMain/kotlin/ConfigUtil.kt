@@ -10,7 +10,7 @@ class ConfigUtil {
             val nLayers = buffer.readIntLe()
             val nHeads = buffer.readIntLe()
             val nKvHeads = buffer.readIntLe()
-            var vocabSize = abs(buffer.readIntLe())
+            val vocabSize = abs(buffer.readIntLe())
             val seqLen = buffer.readIntLe()
             return Config(dim, hiddenDim, nLayers, nHeads, nKvHeads, vocabSize, seqLen)
         }

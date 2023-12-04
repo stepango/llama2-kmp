@@ -5,11 +5,13 @@ class TokenizerUtils {
     companion object {
         fun buildTokenizer(
             fileSystem: FileSystem,
-            vocabSize: Int, path: String = "tokenizer.bin"
+            vocabSize: Int,
+            path: String = "tokenizer.bin",
+            projectRoot: String = "../"
         ): Tokenizer {
             val vocab = arrayOfNulls<String>(vocabSize)
             val vocabScores = FloatArray(vocabSize)
-            fileSystem.read("../$path".toPath()) {
+            fileSystem.read("$projectRoot/$path".toPath()) {
                 val maxTokenLength = this.readIntLe()
                 for (i in 0 until vocabSize) {
                     vocabScores[i] = this.readFloatLe()
