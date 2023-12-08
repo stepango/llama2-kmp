@@ -71,3 +71,13 @@ Suddenly, a kind man came by and saw Lily. He asked her what was wrong. Lily tol
 >Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she saw a big, red
 >
 > achieved tok/s: 68.054444
+
+### Run original llama2.c
+
+Project also contains original llama2.c code, which can be compiled and run with:
+
+Windows:
+```shell
+.\gradlew llama2_c:build
+llama2_c\build\exe\main\debug\llama2_c.exe stories15M.bin
+```
