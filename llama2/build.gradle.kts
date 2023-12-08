@@ -235,3 +235,17 @@ variants.forEach { variant ->
         tasks.named<Exec>("run${variant}Executable${platform}").configure(configureExec)
     }
 }
+
+tasks.withType<NodeJsExec>().all {
+    val denoExecTask = createDenoExec(
+        inputFileProperty,
+        name.replace("Node", "Deno"),
+        group
+    )
+
+    denoExecTask.configure {
+        dependsOn (
+            project.provider { this@all.taskDependencies }
+        )
+    }
+}
