@@ -40,3 +40,6 @@ bin/
 
 ### LLM's
 stories15M.bin
+
+### Kotlin
+.kotlin/

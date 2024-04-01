@@ -1,14 +1,17 @@
-import okio.NodeJsFileSystem
+import okio.fakefilesystem.FakeFileSystem
 import kotlin.time.measureTime
 
 @JsModule("process")
-@JsNonModule
 external object process {
-    val argv: Array<String>
+    val argv: JsArray<JsAny>
     val cwd: () -> String
 }
+
+fun <T> JsArray<JsAny>.map(f: (JsAny) -> T) =
+    (0..this.length).mapNotNull { this[it] }.map(f)
 fun main() {
-    val args = process.argv.sliceArray(2 until process.argv.size)
+    val args = process.argv.map { it.toString() }.toTypedArray().sliceArray(2 until process.argv.length)
+    println(args.map { it.toString() })
     val projectRoot = process.cwd().split("\\").let {
         it.dropLast(it.size - it.indexOf("build"))
     }.joinToString("\\")
@@ -37,15 +40,16 @@ fun main() {
     if (args.size >= 4) {
         prompt = args[3]
     }
+    val fileSystem = FakeFileSystem()
 
     val model = Llama2Utils.buildLlama2(
-        NodeJsFileSystem,
+        fileSystem,
         checkPoint,
         projectRoot
     )
 
     val tokenize = TokenizerUtils.buildTokenizer(
-        NodeJsFileSystem,
+        fileSystem,
         model.config.vocabSize,
         projectRoot = projectRoot
     )
