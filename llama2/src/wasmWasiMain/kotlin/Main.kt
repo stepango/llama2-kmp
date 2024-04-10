@@ -1,20 +1,21 @@
-import okio.fakefilesystem.FakeFileSystem
+import okio.WasiFileSystem
 import kotlin.time.measureTime
+import kotlin.wasm.WasmImport
 
-@JsModule("process")
-external object process {
-    val argv: JsArray<JsAny>
-    val cwd: () -> String
-}
 
-fun <T> JsArray<JsAny>.map(f: (JsAny) -> T) =
-    (0..this.length).mapNotNull { this[it] }.map(f)
+//@JsModule("process")
+//external object process {
+//    val argv: JsArray<JsAny>
+//    val cwd: () -> String
+//}
+//
+//fun <T> JsArray<JsAny>.map(f: (JsAny) -> T) =
+//    (0..this.length).mapNotNull { this[it] }.map(f)
 fun main() {
-    val args = process.argv.map { it.toString() }.toTypedArray().sliceArray(2 until process.argv.length)
-    println(args.map { it.toString() })
-    val projectRoot = process.cwd().split("\\").let {
-        it.dropLast(it.size - it.indexOf("build"))
-    }.joinToString("\\")
+    val args = argsGet()
+//    val args = process.argv.map { it.toString() }.toTypedArray().sliceArray(2 until process.argv.length)
+    println(args)
+    val projectRoot = "."
     println(projectRoot)
     // poor man's C argparse
     var checkPoint: String? = null // e.g. out/model.bin
@@ -40,7 +41,7 @@ fun main() {
     if (args.size >= 4) {
         prompt = args[3]
     }
-    val fileSystem = FakeFileSystem()
+    val fileSystem = WasiFileSystem
 
     val model = Llama2Utils.buildLlama2(
         fileSystem,
